@@ -1,0 +1,22 @@
+9. Which classes are aggregates of other classes? Checking all constructors of whole classes if they initialize for their parts?
+- The CompactDisc class is aggregate of Track class
+- MediaComparatorByCostTitle, MediaComparatorByTitleCost and Media
+- Media and Store
+- Media and Cart
+- Store and Aims
+- Cart and Aim
+
+10. If the passing object is not an instance of Media, what happens?
+- Error
+
+
+12. What class should implement the Comparable interface?
+- class Media
+In those classes, how should you implement the compareTo() method be to reflect the ordering that we want?
+- if the string title is bigger than the other, return 1
+				 less 		    , return -1
+				 equal to		    , return 0
+- implement the same with the cost
+Suppose the DVDs has a different ordering rule from the other media types, that is by title, then decreasing length, then cost. 
+How would you modify your code to allow this?
+- override the method compareTo() in the DVD class
