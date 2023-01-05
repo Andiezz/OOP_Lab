@@ -2,6 +2,7 @@ package hust.soict.itep.aims;
 
 import hust.soict.itep.aims.cart.Cart;
 import hust.soict.itep.aims.media.*;
+import hust.soict.itep.aims.screen.CartScreen;
 import hust.soict.itep.aims.screen.StoreScreen;
 import hust.soict.itep.aims.store.Store;
 
@@ -223,6 +224,7 @@ public class Aims {
             } else if (n == 3) {
                 cart.printCart();
                 // Cart Menu
+                new CartScreen(cart);
                 while (true) {
                     cartMenu();
                     keyboard = new Scanner(System.in);
