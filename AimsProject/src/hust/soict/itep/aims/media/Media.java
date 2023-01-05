@@ -1,6 +1,7 @@
 package hust.soict.itep.aims.media;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 public abstract class Media {
     protected int id = 0;
@@ -56,6 +57,19 @@ public abstract class Media {
                 return true;
             } else {
                 return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean filterProperty(String filter, String type) {
+        if (filter == null || filter.isEmpty()) {
+            return true;
+        } else {
+            if (Objects.equals(type, "title")) {
+                return this.getTitle().toLowerCase().indexOf(filter.toLowerCase()) != -1;
+            } else if (Objects.equals(type, "id")) {
+                return Integer.toString(this.getId()).toLowerCase().indexOf(filter.toLowerCase()) != -1;
             }
         }
         return false;

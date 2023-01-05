@@ -2,6 +2,7 @@ package hust.soict.itep.aims.screen;
 
 
 import hust.soict.itep.aims.cart.Cart;
+import hust.soict.itep.aims.exception.PlayerException;
 import hust.soict.itep.aims.media.Media;
 import hust.soict.itep.aims.media.MediaComparatorByTitleCost;
 import hust.soict.itep.aims.media.Playable;
@@ -24,25 +25,23 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class CartScreenController {
-
     @FXML
     private TableView<Media> tblMedia;
-
     @FXML
     private TableColumn<Media, Float> colMediaCost;
-
+    @FXML
+    private TableColumn<Media, String> colMediaTitle;
+    @FXML
+    private TableColumn<Media, String> colMediaCategory;
 
     @FXML
     private Button btnPlay;
-
     @FXML
     private Button btnRemove;
 
-    @FXML
-    private TableColumn<Media, String> colMediaTitle;
-
-    @FXML
-    private TableColumn<Media, String> colMediaCategory;
+    private TextField tfFilter;
+    private RadioButton radioBtnFilterId;
+    private RadioButton radioBtnFilterTitle;
 
     private Cart cart;
 //    private Store store;
@@ -54,8 +53,6 @@ public class CartScreenController {
 
     @FXML
     public void initialize() {
-//        colMediaId.setCellValueFactory(
-//                new PropertyValueFactory<Media, Integer>("id"));
         colMediaTitle.setCellValueFactory(
                 new PropertyValueFactory<Media, String>("title"));
         colMediaCategory.setCellValueFactory(
@@ -68,61 +65,61 @@ public class CartScreenController {
             tblMedia.setItems(this.cart.getItemsOrdered());
         }
 
-//        btnPlay.setVisible(false);
-//        btnRemove.setVisible(false);
-//
-//        tblMedia.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Media>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Media> observable, Media oldValue, Media newValue) {
-//                updateButtonBar(newValue);
-//            }
-//        });
-//
-//        tfFilter.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                showFilteredMedia(newValue);
-//            }
-//        });
+        btnPlay.setVisible(false);
+        btnRemove.setVisible(false);
+
+        tblMedia.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Media>() {
+            @Override
+            public void changed(ObservableValue<? extends Media> observable, Media oldValue, Media newValue) {
+                updateButtonBar(newValue);
+            }
+        });
+
+        tfFilter.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                showFilteredMedia(newValue);
+            }
+        });
         //costLabel.setText(cart.totalCost() + " $");
     }
 
-//    void updateButtonBar(Media media) {
-//        if (media == null) {
-//            btnPlay.setVisible(false);
-//            btnRemove.setVisible(false);
-//        }
-//        else {
-//            btnRemove.setVisible(true);
-//            if (media instanceof Playable) {
-//                btnPlay.setVisible(true);
-//            }
-//            else {
-//                btnPlay.setVisible(false);
-//            }
-//        }
-//    }
+    void updateButtonBar(Media media) {
+        if (media == null) {
+            btnPlay.setVisible(false);
+            btnRemove.setVisible(false);
+        }
+        else {
+            btnRemove.setVisible(true);
+            if (media instanceof Playable) {
+                btnPlay.setVisible(true);
+            } else {
+                btnPlay.setVisible(false);
+            }
+        }
+    }
 
-//    @FXML
-//    void btnPlayPressed(ActionEvent event) {
-//        try {
-//            Media media = tblMedia.getSelectionModel().getSelectedItem();
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION, ((Playable) media).play().toString());
-//            alert.showAndWait();
-//        } catch (PlayerException e) {
-//            e.printStackTrace();
-//            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-//            alert.showAndWait();
-//        }
-//
-//    }
+    @FXML
+    void btnPlayPressed(ActionEvent event) {
+        try {
+            Media media = tblMedia.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, ((Playable) media).play());
+            alert.showAndWait();
+        } catch (PlayerException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
 
-//    @FXML
-//    void btnRemovePressed(ActionEvent event) {
-//        Media media = tblMedia.getSelectionModel().getSelectedItem();
-//        cart.removeMedia(media);
-//        costLabel.setText(cart.totalCost() + " $");
-//    }
+    }
+
+    @FXML
+    void btnRemovePressed(ActionEvent event) {
+        Media media = tblMedia.getSelectionModel().getSelectedItem();
+        cart.removeMedia(media);
+        // costLabel.setText(cart.totalCost() + " $");
+    }
 //
 //    @FXML
 //    void btnViewStorePressed(ActionEvent event) {
@@ -154,21 +151,21 @@ public class CartScreenController {
 //
 //    }
 
-//    void showFilteredMedia(String filter) {
-//        String filterType;
-//        if (radioBtnFilterTitle.isSelected()) {
-//            filterType = "title";
-//        } else {
-//            filterType = "id";
-//        }
-//
-//        FilteredList<Media> list = new FilteredList<>(cart.getItemsOrdered(), null);
-//        list.setPredicate(media -> media.filterProperty(filter, filterType));
-//
-//        if (cart.getItemsOrdered()!= null) {
-//            tblMedia.setItems(list);
-//        }
-//    }
+    void showFilteredMedia(String filter) {
+        String filterType;
+        if (radioBtnFilterTitle.isSelected()) {
+            filterType = "title";
+        } else {
+            filterType = "id";
+        }
+
+        FilteredList<Media> list = new FilteredList<>(cart.getItemsOrdered(), null);
+        list.setPredicate(media -> media.filterProperty(filter, filterType));
+
+        if (cart.getItemsOrdered()!= null) {
+            tblMedia.setItems(list);
+        }
+    }
 
 
 

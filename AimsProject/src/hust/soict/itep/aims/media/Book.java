@@ -76,6 +76,10 @@ public class Book extends Media {
         return book;
     }
 
+    public Book(String title, String category, float cost) {
+        super(title, category, cost);
+    }
+
     public Book(String title, String category, float cost, List<String> authors) {
         super(title, category, cost);
         this.authors = authors;
